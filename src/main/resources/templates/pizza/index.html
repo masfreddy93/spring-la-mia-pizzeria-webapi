@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Pizze</title>
+<!-- Bootstrap CSS -->
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.1.3/css/bootstrap.min.css}"/>
+</head>
+
+<body class="container">
+	
+	<header th:replace="frag :: header"></header>
+	
+	Logged user: <span sec:authentication="name"></span>
+	<br>
+	<span sec:authorize="isAuthenticated()">Mi vedi solo se sei admin</span>
+	<br>
+	<span sec:authorize="hasAuthority('ADMIN')">Mi vedi solo se sei admin</span>
+	
+	<main>
+		<h3><a class="btn btn-warning mb-3" href="/pizze/create">Create pizza</a></h3>
+		
+		<table class="table" th:if="${pizze.size()} > 0">
+		  <thead>
+		    <tr>
+		      <th scope="col">ID</th>
+		      <th scope="col">Name</th>
+		      <th scope="col">Description</th>
+		      <th scope="col">Price</th>
+		      <th scope="col">Promo</th>
+		      <th scope="col">Ingredients</th>
+		      <th scope="col"></th>
+		      <th scope="col"></th>
+		    </tr>
+		  </thead>
+		  <tbody>
+		    <tr 
+		    	th:each="pizza : ${pizze}"
+		  		th:object="${pizza}"
+		  	>
+		      <th scope="row">[[*{id}]]</th>
+		      <td>
+		      	<a
+		      		th:href="@{/pizza/{id} (id=*{id})}"
+		      	>
+					[[*{name}]]
+		      	</a>
+		      </td>
+		      <td>[[*{description}]]</td>
+		      <td>[[*{price}]]</td>
+	          <td>[[*{promo}]]</td>  
+	          <td>[[*{ingredients}]]</td>  
+		      <td><a th:href="@{/pizze/update/{id} (id=*{id})}" class="btn btn-warning" sec:authorize="hasAuthority('ADMIN')">Update</a></td>
+		      <td><a th:href="@{/pizze/delete/{id} (id=*{id})}" class="btn btn-danger">    Delete</a></td>  
+		    </tr>
+		  </tbody>
+		</table>
+		
+		<p th:unless="${pizze.size() > 0}">The list of pizze is empty at the moment. We are sorry about that!</p>
+	</main>
+	
+</body>
+</html>

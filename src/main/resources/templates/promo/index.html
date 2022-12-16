@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Promozioni</title>
+<!-- Bootstrap CSS -->
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.1.3/css/bootstrap.min.css}"/>
+</head>
+
+<body class="container">
+	
+	<header th:replace="frag :: header"></header>
+	
+	<main>
+		<h3><a class="btn btn-warning mb-3" href="/promo/create">Create promo</a></h3>
+		
+		<table class="table" th:if="${promos.size()} > 0">
+		  <thead>
+		    <tr>
+		      <th scope="col">ID</th>
+		      <th scope="col">Name</th>
+		      <th scope="col">Data Inizio</th>
+		      <th scope="col">Data Fine</th>
+		      <th scope="col">Pizze</th>
+		    </tr>
+		  </thead>
+		  <tbody>
+		    <tr 
+		    	th:each="promo : ${promos}"
+		  		th:object="${promo}"
+		  	>
+		      <th scope="row">[[*{id}]]</th>
+		      <td>
+
+					[[*{titolo}]]
+		      </td>
+		      <td> [[*{dataInizio}]]</td>
+		      <td> [[*{dataFine}]] </td>
+		<!--        <td> [[*{listOfPizzas}]] </td>   -->
+		      <td> 
+		      	<div 
+		      		th:each="pizza : *{listOfPizzas}"
+		      		th:object="${pizza}"
+		      	>
+		      		[[*{name}]]
+		      	</div>
+		      	
+		      </td>    
+
+		    </tr>
+		  </tbody>
+		</table>
+		
+		<p th:unless="${promos.size() > 0}">The list of promos is empty at the moment. We are sorry about that!</p>
+	</main>
+	
+
+</body>
+</html>
