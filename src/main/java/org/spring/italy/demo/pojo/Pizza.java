@@ -29,6 +29,7 @@ public class Pizza{
 	
 	@ManyToOne
 	@JoinColumn(nullable = true)
+	@JsonIgnore
 	private Promozione promo;
 	
 	@Column(name="name", nullable=false, unique = true)

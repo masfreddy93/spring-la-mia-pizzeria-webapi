@@ -18,7 +18,7 @@ public class SecurityConf {
 	@Bean
 	public SecurityFilterChain getFilterChain(HttpSecurity http) throws Exception {
 		
-		http.authorizeHttpRequests()
+		http.csrf().disable().authorizeHttpRequests()
 				.requestMatchers(HttpMethod.GET, "/pizza/*").hasAuthority("USER")
 				.requestMatchers(HttpMethod.GET, "/pizze/**").hasAuthority("ADMIN")
 				.requestMatchers(HttpMethod.POST, "/pizze/**").hasAuthority("ADMIN")
