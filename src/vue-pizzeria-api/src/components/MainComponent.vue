@@ -1,7 +1,7 @@
 <template>
   <div>
+    <input type="text" placeholder="Search pizza" v-model="inputSearch">
     <h2>Pizze</h2>
-    <button @click="test">Test</button>
 
     <!-- Create pizza -->
     <div v-if="!pizza_create_form">
@@ -24,20 +24,21 @@
 
     <!-- index pizze -->
     <ul>
-      <li v-for="pizza in pizze" :key="pizza.id">
+      <li v-for="pizza in pizzeOnSearch" :key="pizza.id">
         {{ pizza.name }}
 
-        <!-- Show ingredients -->
-        <button @click="getIngredients(pizza.id)">Show ingredients</button>
-        <ul>
-          <li v-for="ingrediente in pizza.ingredients" :key="ingrediente.id">
-            {{ ingrediente.name }}
-          </li>
-        </ul>
         
         <!-- Edit pizza -->
         <button @click="editPizza(pizza.id)">Edit</button>
         <div v-if="pizze_edit_id == pizza.id">
+          
+          <!-- Show ingredients -->
+          <button @click="getIngredients(pizza.id)">Show ingredients</button>
+          <ul>
+            <li v-for="ingrediente in pizza.ingredients" :key="ingrediente.id">
+              {{ ingrediente.name }}
+            </li>
+          </ul>
           <br>
 
           <!-- Update -->
@@ -50,13 +51,14 @@
               <br>
               <label for="name">Price</label>
               <input type="number" name="name" v-model="pizza.price">
-              <br>
+              <br><br>
 
               <input type="submit" value="Update">
               <button @click="editPizza(PIZZE_EDIT_ID_DEFAULT)">
                 Cancel
               </button>
             </form>
+            <br><br>
 
           <!-- Delete -->
           <button @click="deletePizza(pizza.id)">Delete</button>
@@ -81,15 +83,11 @@ export default {
       pizze: [],
       pizze_edit_id: PIZZE_EDIT_ID_DEFAULT,
       pizza_create: {},
-      pizza_create_form: false
+      pizza_create_form: false,
+      inputSearch: '',
     }
   },
   methods: {
-
-    // test(){
-
-    //   console.log(this.pizze[2])
-    // },
 
     getPizzaIndexById(id) {
 
@@ -201,6 +199,14 @@ export default {
         this.pizze = pizze
       })
 
+  },
+  computed: {
+    pizzeOnSearch(){
+      return this.pizze.filter(el => {
+
+        return el.name.toLowerCase().includes(this.inputSearch.toLowerCase())
+      })
+    }
   }
 }
 </script>
