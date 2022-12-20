@@ -45,6 +45,10 @@ public class PizzaApiController {
 	@PostMapping("/update/{id}")
 	public Pizza updatePizza(@PathVariable("id") int id, @Valid @RequestBody Pizza pizza) {
 		
+		
+		Pizza oldPizza = pizzaServ.findPizzaById(id).get();
+		pizza.setIngredients(oldPizza.getIngredients());
+		
 		Pizza newPizza = pizzaServ.save(pizza);
 		
 		return newPizza;
